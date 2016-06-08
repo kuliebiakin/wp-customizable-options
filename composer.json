@@ -6,7 +6,6 @@
         "php": "^5.5 || ^7.0"
     },
     "autoload": {
-        "files": ["src/functions.php"],
         "psr-4": {"Customize_Preview_Edit\\": "src/"}
     }
 }
