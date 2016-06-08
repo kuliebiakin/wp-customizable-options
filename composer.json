@@ -1,0 +1,12 @@
+{
+    "name": "viktor777/customize-preview-edit",
+    "description": "Library for live editing in preview part of WordPress Customizer.",
+    "license": "MIT",
+    "require": {
+        "php": "^5.5 || ^7.0"
+    },
+    "autoload": {
+        "files": ["src/functions.php"],
+        "psr-4": {"Customize_Preview_Edit\\": "src/"}
+    }
+}
