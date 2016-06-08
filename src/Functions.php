@@ -10,12 +10,12 @@ namespace Customize_Preview_Edit;
 final class Functions
 {
     /**
-     * @param string $option
-     * @param string $default
+     * @param string      $option
+     * @param string|null $default
      *
      * @return mixed
      */
-    public static function get_option( $option, $default = '...' )
+    public static function get_option( $option, $default = null )
     {
         global $wp_customize;
 

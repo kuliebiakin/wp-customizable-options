@@ -10,9 +10,15 @@ namespace Customize_Preview_Edit;
 final class Initialization
 {
     const VERSION = '0.0.1';
+    /**
+     * @var null|string
+     */
+    protected $_assets_url = null;
     
-    public function __construct()
+    public function __construct( $base_url )
     {
+        $this->_assets_url = "$base_url/viktor777/customize-preview-edit/assets";
+        
         add_action( 'customize_controls_enqueue_scripts', function () {
             $this->_enqueue_customize_scripts();
         }, 999 );
@@ -25,7 +31,7 @@ final class Initialization
     {
         wp_enqueue_script(
             'customize-preview-edit-admin',
-            plugins_url( '/customize-preview-edit/assets/scripts/customize.js' ),
+            "{$this->_assets_url}/scripts/customize.js",
             [ 'jquery' ],
             static::VERSION,
             true
@@ -34,10 +40,17 @@ final class Initialization
     
     private function _enqueue_preview_scripts()
     {
-        wp_enqueue_script( 
+        wp_enqueue_script(
+            'jquery-caret',
+            "{$this->_assets_url}/scripts/jquery.caret.min.js",
+            [ 'jquery' ],
+            '0.3.1',
+            true
+        );
+        wp_enqueue_script(
             'customize-preview-edit-frontend',
-            plugins_url( '/customize-preview-edit/assets/scripts/preview.js' ), 
-            [ 'jquery', 'underscore', 'customize-preview' ],
+            "{$this->_assets_url}/scripts/preview.js",
+            [ 'jquery', 'jquery-caret', 'underscore', 'customize-preview' ],
             static::VERSION,
             true
         );
