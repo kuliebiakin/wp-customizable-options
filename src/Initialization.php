@@ -17,7 +17,7 @@ final class Initialization
     
     public function __construct( $base_url )
     {
-        $this->_assets_url = "$base_url/viktor777/customize-preview-edit/assets";
+        $this->_assets_url = "$base_url/customize-preview-edit/assets";
         
         add_action( 'customize_controls_enqueue_scripts', function () {
             $this->_enqueue_customize_scripts();

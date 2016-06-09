@@ -121,6 +121,7 @@
 
                 if (this._caret !== null) {
                     this.$el.caret('pos', this._caret);
+                    this._caret = null;
                 }
 
                 return this;

@@ -1,27 +1,21 @@
 <?php
 
-namespace Customize_Preview_Edit;
-
-/**
- * Class Functions
- *
- * @package Customize_Preview_Edit
- */
-final class Functions
-{
+if ( !function_exists( 'the_customizable_text' ) ) {
     /**
+     * Displays text which is editable in preview when admin is in Customizer
+     * 
      * @param string      $option
      * @param string|null $default
+     * @param string      $tag
      *
      * @return mixed
      */
-    public static function get_option( $option, $default = null )
-    {
+    function the_customizable_text( $option, $default = null, $tag = 'span' ) {
         global $wp_customize;
 
         $value = get_option( $option, $default );
 
-        return !empty( $wp_customize )
-            ? "<span data-customize-preview-edit=\"$option\">$value</span>" : $value;
+        echo !empty( $wp_customize )
+            ? "<$tag data-customize-preview-edit=\"$option\">$value</$tag>" : $value;
     }
 }
