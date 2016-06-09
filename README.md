@@ -15,7 +15,7 @@ $ composer require viktor777/customize-preview-edit
 #### Initialization
 
 ```
-new Customize_Preview_Edit\Initialization( get_template_directory_uri() . '/path/to/lib/dir' );
+new Customize_Preview_Edit\Initialization();
 ```
 
 #### Editable option
