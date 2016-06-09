@@ -12,8 +12,6 @@
             this.el = el;
             this.$el = $(this.el);
             this.setting = this.$el.data(ATTRIBUTE);
-            this._send = false;
-            this._caret = null;
             this.initialize();
             this.$el.data(ATTRIBUTE, this);
         }
@@ -33,7 +31,7 @@
                 this.$el
                     .attr('contenteditable', 'true')
                     .attr('tabindex', '-1');
-                this.setDefault();
+                this.reset();
 
                 return this;
             },
@@ -67,8 +65,8 @@
                 var value = this._value.get();
 
                 if (typeof newValue !== 'undefined' && newValue !== null && value !== newValue) {
-                    this._send = true;
                     this._caret = this.$el.caret('pos');
+                    this.$el.off('blur', this._listeners.onBlur);
                     api.preview.send(ATTRIBUTE, {
                         setting: this.setting,
                         value: newValue
@@ -92,9 +90,10 @@
             onCustomizeChange: function (newValue) {
                 this.$el.text(newValue);
 
-                if (this._send) {
-                    this.focus()
-                        ._send = false;
+                if (this._caret !== null) {
+                    this.focus();
+                } else {
+                    this.reset();
                 }
 
                 return this;
@@ -105,9 +104,8 @@
                 return this;
             },
             onBlur: function () {
-                this.save();
-                this._send = false;
-                this.setDefault();
+                this.save()
+                    .reset();
 
                 return this;
             },
@@ -118,15 +116,14 @@
             },
             focus: function () {
                 this.el.focus();
-
-                if (this._caret !== null) {
-                    this.$el.caret('pos', this._caret);
-                    this._caret = null;
-                }
+                this.$el.caret('pos', this._caret);
+                this._caret = null;
+                this.$el.on('blur', this._listeners.onBlur);
 
                 return this;
             },
-            setDefault: function () {
+            reset: function () {
+                this._caret = null;
 
                 if (!this.value()) {
                     this.$el.text('...');
