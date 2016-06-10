@@ -26,5 +26,5 @@ the_customizable_text( $option, $default = null, $tag = 'span' );
 
 ## Notes
 
-* Options are wrapped by default in tag 'span' when admin is in Customoizer
+* Options are wrapped by default in tag 'span' when admin is in Customizer
 * You need to set 'postMessage' as 'transport' and 'option' as 'type' in [setting options](https://developer.wordpress.org/themes/advanced-topics/customizer-api/#settings)

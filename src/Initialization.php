@@ -1,16 +1,27 @@
 <?php
 
-namespace Customize_Preview_Edit;
+namespace WPCustomizableOptions;
 
 /**
  * Class Initialization
  *
- * @package Customize_Preview_Edit
+ * @package WPCustomizableOptions
  */
 final class Initialization
 {
+    const KEY = 'customizable_options';
+    const DOMAIN = 'customizable-options';
+    /**
+     * @var null|\WP_Customize_Manager
+     */
+    private $_customize = null;
+
     public function __construct()
     {
+        add_action( 'customize_register', function ( $wp_customize ) {
+            $this->_customize = $wp_customize;
+            $this->_register();
+        } );
         add_action( 'customize_controls_enqueue_scripts', function () {
             $this->_enqueue_customize_scripts();
         } );
@@ -19,11 +30,19 @@ final class Initialization
         } );
     }
 
+    private function _register()
+    {
+        $this->_customize->add_section( static::KEY, [
+            'title' => __( 'Customizable Options', static::DOMAIN )
+        ] );
+    }
+
     private function _enqueue_customize_scripts()
     {
         wp_enqueue_script( 'jquery' );
 
-        $this->_add_inline_script( 'customize', 'customize-controls' );
+        static::add_script_settings( 'customize-controls', $this->get_script_settings() );
+        static::add_inline_script( 'customize', 'customize-controls' );
     }
     
     private function _enqueue_preview_scripts()
@@ -31,15 +50,32 @@ final class Initialization
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'underscore' );
 
-        $this->_add_inline_script( 'jquery.caret.min', 'customize-preview' );
-        $this->_add_inline_script( 'preview', 'customize-preview' );
+        static::add_inline_script( 'jquery.caret.min', 'customize-preview' );
+        static::add_script_settings( 'customize-preview', $this->get_script_settings() );
+        static::add_inline_script( 'preview', 'customize-preview' );
+    }
+    
+    private function get_script_settings()
+    {
+        return [
+            'key' => static::KEY
+        ];
+    }
+
+    public static function add_script_settings( $handle, array $settings = [] )
+    {
+        wp_add_inline_script(
+            $handle,
+            'var CustomizableOptions = ' . json_encode( $settings ) . ';',
+            'before'
+        );
     }
 
     /**
      * @param string $name
      * @param string $handle
      */
-    private function _add_inline_script( $name, $handle )
+    public static function add_inline_script( $name, $handle )
     {
         wp_add_inline_script(
             $handle,

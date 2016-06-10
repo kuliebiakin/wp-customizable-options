@@ -1,7 +1,7 @@
-(function ($, _, wp) {
+(function ($, _, settings) {
 
     'use strict';
-
+console.log(settings);
     var api = wp.customize;
     var ATTRIBUTE = 'customize-preview-edit';
     var Field;
@@ -142,4 +142,4 @@
         });
     });
 
-})(jQuery, _, window.wp);
+})(jQuery, _, window.CustomizableOptions);

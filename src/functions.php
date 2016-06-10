@@ -16,6 +16,6 @@ if ( !function_exists( 'the_customizable_text' ) ) {
         $value = get_option( $option, $default );
 
         echo !empty( $wp_customize )
-            ? "<$tag data-customize-preview-edit=\"$option\">$value</$tag>" : $value;
+            ? "<$tag data-" . \WPCustomizableOptions\Initialization::KEY . "=\"$option\">$value</$tag>" : $value;
     }
 }

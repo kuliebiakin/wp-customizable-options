@@ -7,6 +7,6 @@
     },
     "autoload": {
         "files": ["src/functions.php"],
-        "psr-4": {"Customize_Preview_Edit\\": "src/"}
+        "psr-4": {"WPCustomizableOptions\\": "src/"}
     }
 }
