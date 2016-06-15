@@ -1,5 +1,14 @@
 <?php
 
+if ( !function_exists( 'register_customizable_options' ) ) {
+    /**
+     * Initializes library
+     */
+    function register_customizable_options() {
+        new \WPCustomizableOptions\Initialization();
+    }
+}
+
 if ( !function_exists( '_the_customizable_text_value' ) ) {
     /**
      * Returns filtered text value
