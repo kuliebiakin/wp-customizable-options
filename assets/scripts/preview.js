@@ -1,29 +1,59 @@
 (function ($, _, settings) {
 
     'use strict';
-console.log(settings);
+
     var api = wp.customize;
-    var ATTRIBUTE = 'customize-preview-edit';
     var Field;
+    var $doc = $('html, body');
+    var $window = $(window);
 
     Field = (function () {
 
         function Field(el) {
             this.el = el;
             this.$el = $(this.el);
-            this.setting = this.$el.data(ATTRIBUTE);
-            this.initialize();
-            this.$el.data(ATTRIBUTE, this);
+            this.setting = this.$el.data(settings.key);
+            this._value = null;
+            this.ready();
+            this.$el.data(settings.key, this);
         }
 
         Field.prototype = {
+            ready: function () {
+                api.bind('preview-ready', this.initialize.bind(this));
+
+                return this;
+            },
             initialize: function () {
                 api(this.setting, function (value) {
-                    this._value = value;
-                    this.enqueue()
-                        .enable()
-                        .on();
+                    if (this._value === null) {
+                        this._value = value;
+                        this.enqueue()
+                            .enable()
+                            .on();
+                    }
                 }.bind(this));
+
+                if (this._value === null) {
+                    this.add();
+                }
+
+                return this;
+            },
+            add: function () {
+                api.preview
+                    .bind('sync', function () {
+                        var value = {};
+
+                        value[this.setting] = this.$el.text();
+                        api.preview.send(settings.key + ':add', {
+                            setting: this.setting,
+                            value: value[this.setting]
+                        });
+                        api.preview.trigger('settings', $.extend(api.settings.values, value));
+                        this.initialize();
+                        this.$el.text(this._value.get());
+                    }.bind(this));
 
                 return this;
             },
@@ -67,12 +97,12 @@ console.log(settings);
                 if (typeof newValue !== 'undefined' && newValue !== null && value !== newValue) {
                     this._caret = this.$el.caret('pos');
                     this.$el.off('blur', this._listeners.onBlur);
-                    api.preview.send(ATTRIBUTE, {
+                    api.preview.send(settings.key + ':edit', {
                         setting: this.setting,
                         value: newValue
                     });
                 }
-                
+
                 return value;
             },
             toString: function () {
@@ -89,7 +119,7 @@ console.log(settings);
             },
             onCustomizeChange: function (newValue) {
                 this.$el.text(newValue);
-
+                
                 if (this._caret !== null) {
                     this.focus();
                 } else {
@@ -122,24 +152,41 @@ console.log(settings);
 
                 return this;
             },
+            scroll: function () {
+                /**
+                 * @TODO: refactor
+                 */
+                var height = this.$el.outerHeight();
+                var windowHeight = $window.height();
+                var margin = height > windowHeight ? 0 : (windowHeight - height) / 2;
+
+                $doc.animate({
+                    scrollTop: this.$el.offset().top - margin
+                }, 'fast', function () {
+                    $doc.off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
+                });
+
+                return this;
+            },
             reset: function () {
                 this._caret = null;
 
                 if (!this.value()) {
-                    this.$el.text('...');
+                    this.$el.text(this.placeholder());
                 }
 
                 return this;
+            },
+            placeholder: function () {
+                return '...';
             }
         };
 
         return Field;
     })();
 
-    api.bind('preview-ready', function () {
-        $('[data-' + ATTRIBUTE + ']').each(function (index, el) {
-            new Field(el);
-        });
+    $('[data-' + settings.key + ']').each(function (index, el) {
+        new Field(el);
     });
-
+    
 })(jQuery, _, window.CustomizableOptions);

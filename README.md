@@ -1,6 +1,6 @@
-# WordPress Customizer Preview Live Edit
+# WordPress Customizable Options
 
-Library that allows to edit simple text options in preview part of customizer, on frontend.
+Library that allows to edit simple text options in preview part of WordPress Customizer, on frontend.
 
 ## Installation
 
@@ -15,13 +15,13 @@ $ composer require viktor777/customize-preview-edit
 #### Initialization
 
 ```
-new Customize_Preview_Edit\Initialization();
+new WPCustomizeOptions\Initialization();
 ```
 
 #### Editable option
 
 ```
-the_customizable_text( $option, $default = null, $tag = 'span' );
+the_customizable_text( $option, $default = null );
 ```
 
 ## Notes
