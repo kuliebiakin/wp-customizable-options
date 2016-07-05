@@ -26,6 +26,7 @@ final class Initialization
             $this->_enqueue_customize_scripts();
         } );
         add_action( 'customize_preview_init', function () {
+            $this->_enqueue_preview_styles();
             $this->_enqueue_preview_scripts();
         } );
         add_action( 'customize_controls_print_footer_scripts', function () {
@@ -53,6 +54,11 @@ final class Initialization
 
         $this->_enqueue_script_settings( 'customize-controls' );
         static::add_inline_script( 'customize', 'customize-controls' );
+    }
+
+    private function _enqueue_preview_styles()
+    {
+        wp_enqueue_style( 'dashicons' );
     }
     
     private function _enqueue_preview_scripts()

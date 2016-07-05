@@ -33,7 +33,7 @@
                             .on();
                     }
                 }.bind(this));
-
+                
                 if (this._value === null) {
                     this.add();
                 }
@@ -58,9 +58,11 @@
                 return this;
             },
             enable: function () {
+                this.$edit = $('<span class="dashicons dashicons-edit" style="cursor: pointer; font-size: inherit;" />');
                 this.$el
                     .attr('contenteditable', 'true')
-                    .attr('tabindex', '-1');
+                    .attr('tabindex', '-1')
+                    .after(this.$edit);
                 this.reset();
 
                 return this;
@@ -70,6 +72,8 @@
                     .removeAttr('contenteditable')
                     .removeAttr('tabindex')
                     .text(this.value());
+                this.$edit.remove();
+                this.$edit = null;
 
                 return this;
             },
@@ -79,6 +83,8 @@
                 this.$el
                     .on('keyup cut copy paste input', this._listeners.onPreviewChange)
                     .on('blur', this._listeners.onBlur);
+                this.$edit
+                    .on('click', this._listeners.onEditClick);
 
                 return this;
             },
@@ -88,6 +94,8 @@
                 this.$el
                     .off('keyup cut copy paste input', this._listeners.onPreviewChange)
                     .off('blur', this._listeners.onBlur);
+                this.$edit
+                    .off('click', this._listeners.onEditClick);
 
                 return this;
             },
@@ -112,7 +120,8 @@
                 this._listeners = {
                     onCustomizeChange: this.onCustomizeChange.bind(this),
                     onPreviewChange: _.debounce(this.onPreviewChange.bind(this), $.fx.speeds.fast),
-                    onBlur: this.onBlur.bind(this)
+                    onBlur: this.onBlur.bind(this),
+                    onEditClick: this.onEditClick.bind(this)
                 };
 
                 return this;
@@ -136,6 +145,11 @@
             onBlur: function () {
                 this.save()
                     .reset();
+
+                return this;
+            },
+            onEditClick: function () {
+                this.focus();
 
                 return this;
             },

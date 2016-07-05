@@ -8,7 +8,6 @@
         var templates = {
             text: wp.template('customize-control-' + settings.key + '-text')
         };
-        var counter = 1;
         var dynamicSettingsKey = '_' + settings.key;
         var dynamicSettings = api.create(dynamicSettingsKey, dynamicSettingsKey, [], {
             transport: settings.setting.default.transport,
@@ -22,7 +21,8 @@
 
                 if (typeof control === 'undefined') {
                     if (!data.label) {
-                        data.label = '#' + counter++;
+                        data.label = data.setting[0].toUpperCase() + data.setting.slice(1);
+                        data.label = data.label.replace(/_+/g, ' ');
                     }
                     api.create(data.setting, data.setting, data.value, {
                         transport: settings.setting.default.transport,
