@@ -21,8 +21,12 @@
 
                 if (typeof control === 'undefined') {
                     if (!data.label) {
-                        data.label = data.setting[0].toUpperCase() + data.setting.slice(1);
-                        data.label = data.label.replace(/_+/g, ' ');
+                        data.label = data.setting
+                            .split('_')
+                            .map(function (word) {
+                                return word[0].toUpperCase() + word.slice(1)
+                            })
+                            .join(' ');
                     }
                     api.create(data.setting, data.setting, data.value, {
                         transport: settings.setting.default.transport,

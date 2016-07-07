@@ -7,7 +7,7 @@ Library that allows to edit simple text options in preview part of WordPress Cus
 #### Composer
 
 ```
-$ composer require viktor777/customize-preview-edit
+$ composer require viktor777/wp-customizable-options
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ register_customizable_options();
 #### Editable option
 
 ```
-the_customizable_text( $option, $default = null );
+the_customizable_text( $option, $default = false );
 ```
 
 #### Change default wrapper
@@ -54,4 +54,4 @@ add_filter( 'the_customizable_text_value', function () {
 ## Notes
 
 * If you do not add setting in Customizer with your code, it will be stored in section which is called 'Customizable Options' by default
-* You need to set 'postMessage' as 'transport' and 'option' as 'type' in [setting options](https://developer.wordpress.org/themes/advanced-topics/customizer-api/#settings)
+* Label of control in Customizer will be generated from option name by default, e.g. 'customizable_option' => 'Customizable Option'
