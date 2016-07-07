@@ -1,5 +1,5 @@
 {
-    "name": "viktor777/customize-preview-edit",
+    "name": "viktor777/wp-customizable-options",
     "description": "Library for live editing in preview part of WordPress Customizer.",
     "license": "MIT",
     "require": {
