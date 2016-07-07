@@ -31,12 +31,12 @@ if ( !function_exists( 'the_customizable_text' ) ) {
     /**
      * Displays text which is editable in preview when admin is in Customizer
      * 
-     * @param string      $option
-     * @param string|null $default
+     * @param string       $option
+     * @param string|bool $default
      *
      * @return mixed
      */
-    function the_customizable_text( $option, $default = null ) {
+    function the_customizable_text( $option, $default = false ) {
         global $wp_customize;
 
         $value = apply_filters( 'the_customizable_text_value', get_option( $option, $default ), $option );
