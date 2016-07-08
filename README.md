@@ -51,6 +51,10 @@ add_filter( 'the_customizable_text_value', function () {
 } );
 ```
 
+## Demo
+
+https://youtu.be/pCT5_stDPYM
+
 ## Notes
 
 * If you do not add setting in Customizer with your code, it will be stored in section which is called 'Customizable Options' by default
